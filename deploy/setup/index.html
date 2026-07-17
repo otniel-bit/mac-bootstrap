@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0e0d0b" />
+    <title>Portable Mac Setup — Otniel</title>
+    <meta
+      name="description"
+      content="Restore Otniel's trusted Mac applications and terminal tools in one repeatable pass."
+    />
+    <meta property="og:title" content="Portable Mac Setup" />
+    <meta property="og:description" content="Your setup, wherever you land." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://otniel.me/setup/" />
+    <meta property="og:image" content="https://otniel.me/setup/og.png" />
+    <meta property="og:image:width" content="1536" />
+    <meta property="og:image:height" content="1024" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Portable Mac Setup" />
+    <meta name="twitter:description" content="Your setup, wherever you land." />
+    <meta name="twitter:image" content="https://otniel.me/setup/og.png" />
+    <link rel="stylesheet" href="/setup/styles.css" />
+    <script src="/setup/app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <div class="glow glowOne" aria-hidden="true"></div>
+      <div class="glow glowTwo" aria-hidden="true"></div>
+
+      <header class="topbar">
+        <a class="brand" href="https://otniel.me" aria-label="Return to otniel.me">
+          <span class="brandMark">o</span>
+          <span>portable mac</span>
+        </a>
+        <span class="unlisted">unlisted utility</span>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Fresh Mac → familiar workspace</p>
+        <h1 id="page-title">Your setup,<br /><em>wherever you land.</em></h1>
+        <p class="intro">
+          Install the everyday apps and terminal tools in one repeatable pass.
+          Files stay in Google Drive; this restores the working environment.
+        </p>
+
+        <div class="installer" aria-label="Mac installation command">
+          <div class="terminalBar">
+            <span class="terminalLabel">Terminal</span>
+            <span class="verified">source available</span>
+          </div>
+          <code id="install-command">curl -fsSL https://raw.githubusercontent.com/otniel-bit/mac-bootstrap/main/install.sh | bash</code>
+          <button class="primaryButton" id="copy-installer" type="button">
+            <span id="copy-label">Copy install command</span>
+            <span id="copy-symbol" aria-hidden="true">⌘</span>
+          </button>
+        </div>
+
+        <p class="microcopy">
+          Requires macOS, an administrator account, and an internet connection.
+          macOS will still ask you to approve security and privacy prompts.
+        </p>
+      </section>
+
+      <section class="contents" aria-labelledby="contents-title">
+        <div class="sectionHeading">
+          <p class="eyebrow">Inside the setup</p>
+          <h2 id="contents-title">Deliberately small. Easy to trust.</h2>
+        </div>
+
+        <div class="lists">
+          <article class="toolGroup">
+            <p class="groupNumber">01 / Apps</p>
+            <ul>
+              <li><span>Google Chrome</span><small>default browser</small></li>
+              <li><span>Slack</span></li>
+              <li><span>ChatGPT</span></li>
+              <li><span>Claude</span></li>
+              <li><span>Wispr Flow</span></li>
+              <li><span>Logitech Options+</span></li>
+            </ul>
+          </article>
+
+          <article class="toolGroup">
+            <p class="groupNumber">02 / Terminal</p>
+            <ul>
+              <li><span>Homebrew</span></li>
+              <li><span>Git</span></li>
+              <li><span>GitHub CLI</span></li>
+              <li><span>Node.js</span></li>
+              <li><span>Railway CLI</span></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="steps" aria-labelledby="steps-title">
+        <div class="sectionHeading">
+          <p class="eyebrow">Three moves</p>
+          <h2 id="steps-title">Copy. Paste. Sign in.</h2>
+        </div>
+        <ol>
+          <li>
+            <span>01</span>
+            <div>
+              <h3>Copy the command</h3>
+              <p>The button puts the verified installer command on your clipboard.</p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <h3>Paste it in Terminal</h3>
+              <p>The script installs Homebrew first, then everything in the Brewfile.</p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <h3>Sign in once</h3>
+              <p>Open Drive in Chrome and connect the apps you want on that Mac.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="sourceCard" aria-labelledby="source-title">
+        <div>
+          <p class="eyebrow">No mystery installer</p>
+          <h2 id="source-title">Read every line before you run it.</h2>
+          <p>
+            The repository contains no passwords, tokens, browser profiles, or personal
+            files. It is intentionally public and auditable.
+          </p>
+        </div>
+        <a
+          class="secondaryButton"
+          href="https://github.com/otniel-bit/mac-bootstrap"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Review source on GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+
+      <footer>
+        <span>Otniel / Mac Bootstrap</span>
+        <span>Progress over clutter. Systems over chaos.</span>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,1113 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0e0d0b" />
+    <title>Otniel — Technologist, Systems Architect, Builder</title>
+    <meta name="description" content="Miami-based technologist building practical systems at the intersection of AI, automation, cybersecurity, and minimalist design." />
+    <meta property="og:title" content="Otniel — Technologist, Systems Architect, Builder" />
+    <meta property="og:description" content="Progress over clutter. Systems over chaos. Truth over comfort." />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%230e0d0b"/><text x="50%25" y="55%25" font-family="Georgia,serif" font-size="20" font-style="italic" fill="%23e85d2f" text-anchor="middle" dominant-baseline="middle">o</text></svg>'
+    />
+
+    <style>
+      /* ─── tokens ─────────────────────────────────────────────────────── */
+      :root {
+        --bg: #0e0d0b;
+        --surface: #16140f;
+        --surface-2: #1d1a13;
+        --ink: #ece7d8;
+        --ink-dim: #b3ad9d;
+        --muted: #7a736a;
+        --line: #2a2620;
+        --accent: #e85d2f;
+        --accent-soft: #ff7a4d;
+        --warn: #d4a857;
+        --shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.7);
+        --radius: 14px;
+        --measure: 62ch;
+        --easing: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      html[data-theme="paper"] {
+        --bg: #f1ece0;
+        --surface: #e7e1d2;
+        --surface-2: #ddd6c4;
+        --ink: #1c1a16;
+        --ink-dim: #4a463d;
+        --muted: #807a6e;
+        --line: #c9c2b1;
+        --accent: #c84718;
+        --accent-soft: #d75d2c;
+        --warn: #8a6a16;
+        --shadow: 0 20px 60px -32px rgba(40, 32, 20, 0.25);
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Manrope", system-ui, sans-serif;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        overflow-x: hidden;
+        transition: background-color 0.6s var(--easing), color 0.6s var(--easing);
+      }
+
+      ::selection { background: var(--accent); color: var(--bg); }
+
+      a { color: inherit; text-decoration: none; }
+
+      /* ─── grain & ambience ──────────────────────────────────────────── */
+      .grain {
+        position: fixed; inset: 0; pointer-events: none; z-index: 90;
+        opacity: 0.06; mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      }
+
+      .vignette {
+        position: fixed; inset: -10vh -10vw; pointer-events: none; z-index: 1;
+        background: radial-gradient(60% 50% at 30% 20%, rgba(232,93,47,0.12), transparent 70%),
+                    radial-gradient(70% 60% at 90% 90%, rgba(212,168,87,0.08), transparent 70%);
+        filter: blur(40px);
+      }
+
+      /* ─── scroll progress ───────────────────────────────────────────── */
+      .progress {
+        position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 200;
+        background: var(--line);
+      }
+      .progress::after {
+        content: ""; display: block; height: 100%; width: var(--p, 0%);
+        background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+        transition: width 0.06s linear;
+      }
+
+      /* ─── cursor ────────────────────────────────────────────────────── */
+      .cursor {
+        position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+        border-radius: 50%; background: var(--accent);
+        transform: translate3d(-100px, -100px, 0);
+        pointer-events: none; z-index: 250;
+        mix-blend-mode: difference;
+        transition: width 0.25s var(--easing), height 0.25s var(--easing), opacity 0.3s;
+      }
+      .cursor.is-hover { width: 36px; height: 36px; background: transparent; border: 1.5px solid var(--accent); }
+      @media (hover: none) { .cursor { display: none; } }
+
+      /* ─── layout shell ──────────────────────────────────────────────── */
+      .shell { position: relative; z-index: 2; padding: 28px 6vw 0; }
+      .topbar {
+        display: grid; grid-template-columns: auto 1fr auto;
+        align-items: center; gap: 24px;
+        padding: 14px 0; border-bottom: 1px solid var(--line);
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+        color: var(--ink-dim);
+      }
+      .mark {
+        display: inline-flex; align-items: center; gap: 10px;
+        font-family: "Fraunces", serif; font-style: italic;
+        font-size: 22px; letter-spacing: -0.01em; color: var(--ink);
+        text-transform: none;
+      }
+      .mark .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 2.4s var(--easing) infinite; }
+      @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.45); opacity: 0.55; } }
+
+      .status { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+      .status span { display: inline-flex; gap: 6px; align-items: center; }
+      .status b { color: var(--ink); font-weight: 500; }
+      .status .sep { color: var(--line); }
+
+      .topbar nav { justify-self: end; display: flex; gap: 14px; align-items: center; }
+      .topbar nav a { transition: color 0.2s; }
+      .topbar nav a:hover { color: var(--accent); }
+      .topbar .key {
+        border: 1px solid var(--line); padding: 4px 8px; border-radius: 6px;
+        font-size: 10.5px; color: var(--ink-dim);
+      }
+
+      /* ─── side index ────────────────────────────────────────────────── */
+      .side {
+        position: fixed; right: 28px; top: 50%; transform: translateY(-50%);
+        z-index: 80; display: flex; flex-direction: column; gap: 14px;
+        font-family: "JetBrains Mono", monospace; font-size: 11px;
+        color: var(--muted);
+      }
+      .side a { display: flex; gap: 10px; align-items: center; transition: color 0.25s; }
+      .side a::before {
+        content: ""; width: 18px; height: 1px; background: var(--muted);
+        transition: width 0.3s var(--easing), background 0.3s;
+      }
+      .side a:hover, .side a.is-active { color: var(--ink); }
+      .side a:hover::before, .side a.is-active::before { width: 36px; background: var(--accent); }
+      @media (max-width: 900px) { .side { display: none; } }
+
+      /* ─── section primitives ───────────────────────────────────────── */
+      section {
+        max-width: 1280px; margin: 0 auto; padding: 14vh 6vw;
+        position: relative;
+      }
+      .section-head {
+        display: grid; grid-template-columns: 1fr;
+        gap: 18px; margin-bottom: 64px;
+      }
+      .section-index {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+        color: var(--accent);
+        display: inline-flex; gap: 12px; align-items: center;
+      }
+      .section-index::before {
+        content: ""; width: 28px; height: 1px; background: var(--accent);
+      }
+      h2 {
+        font-family: "Fraunces", serif;
+        font-weight: 400;
+        font-size: clamp(36px, 5.5vw, 72px);
+        letter-spacing: -0.02em;
+        line-height: 1.02;
+        margin: 0;
+        font-variation-settings: "opsz" 80;
+      }
+      h2 em { font-style: italic; color: var(--accent); font-weight: 300; }
+
+      .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--easing), transform 0.9s var(--easing); }
+      .reveal.is-in { opacity: 1; transform: none; }
+
+      /* ─── HERO ──────────────────────────────────────────────────────── */
+      .hero {
+        min-height: 92vh;
+        padding-top: 8vh;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 48px;
+        align-content: center;
+      }
+      .hero .eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+        color: var(--ink-dim);
+        display: flex; gap: 18px; flex-wrap: wrap;
+      }
+      .hero .eyebrow b { color: var(--ink); font-weight: 500; }
+      .hero .eyebrow .live {
+        display: inline-flex; gap: 8px; align-items: center;
+      }
+      .hero .eyebrow .live::before {
+        content: ""; width: 7px; height: 7px; border-radius: 50%;
+        background: #6fbf73; box-shadow: 0 0 10px #6fbf73; animation: pulse 1.6s infinite;
+      }
+
+      .hero-name {
+        font-family: "Fraunces", serif;
+        font-weight: 400;
+        font-size: clamp(72px, 17vw, 248px);
+        line-height: 0.84;
+        letter-spacing: -0.045em;
+        margin: 0;
+        color: var(--ink);
+        font-variation-settings: "opsz" 144;
+      }
+      .hero-name .letter {
+        display: inline-block;
+        transition: transform 0.5s var(--easing), color 0.4s;
+        will-change: transform;
+      }
+      .hero-name .letter:hover { color: var(--accent); transform: translateY(-12px) rotate(-3deg); }
+      .hero-name .em { font-style: italic; font-weight: 300; color: var(--accent); }
+
+      .hero-line {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+        gap: 40px;
+        align-items: end;
+        border-top: 1px solid var(--line);
+        padding-top: 28px;
+      }
+      .hero-line p {
+        margin: 0; max-width: 56ch; color: var(--ink-dim);
+        font-size: clamp(16px, 1.4vw, 19px); line-height: 1.55;
+      }
+      .hero-line p .accent { color: var(--ink); }
+      .hero-cta {
+        display: inline-flex; gap: 12px; align-items: center;
+        padding: 16px 28px; border-radius: 999px;
+        background: var(--ink); color: var(--bg);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+        position: relative; transition: background 0.3s, color 0.3s;
+        white-space: nowrap;
+      }
+      .hero-cta:hover { background: var(--accent); color: var(--bg); }
+      .hero-cta .arrow { transition: transform 0.3s var(--easing); }
+      .hero-cta:hover .arrow { transform: translateX(4px); }
+
+      .hero-strip {
+        margin-top: 24px;
+        display: flex; gap: 36px; flex-wrap: wrap;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+        color: var(--muted);
+      }
+      .hero-strip span b { color: var(--ink); font-weight: 500; }
+
+      /* ─── NOTE ──────────────────────────────────────────────────────── */
+      .note {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+      }
+      .note-body {
+        font-family: "Fraunces", serif;
+        font-weight: 300;
+        font-size: clamp(22px, 2.4vw, 34px);
+        line-height: 1.32;
+        letter-spacing: -0.01em;
+        max-width: 28ch;
+        color: var(--ink);
+      }
+      .note-body em { color: var(--accent); font-style: italic; }
+      .note-body .first::first-letter {
+        font-size: 1.6em; font-weight: 500; float: left;
+        line-height: 0.9; padding: 6px 14px 0 0; color: var(--accent);
+      }
+
+      .note-meta {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+        border-top: 1px solid var(--line); padding-top: 28px;
+        font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 1.7;
+        color: var(--ink-dim);
+      }
+      .note-meta b { color: var(--ink); font-weight: 500; }
+      .note-meta .label { color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; font-size: 10.5px; display: block; margin-bottom: 6px; }
+
+      @media (min-width: 800px) {
+        .note { grid-template-columns: 1.2fr 0.8fr; gap: 80px; align-items: start; }
+      }
+
+      /* ─── WORK ──────────────────────────────────────────────────────── */
+      .work-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .work-item {
+        display: grid;
+        grid-template-columns: 60px 1fr;
+        gap: 28px;
+        padding: 28px 0;
+        border-top: 1px solid var(--line);
+        position: relative;
+        cursor: pointer;
+        transition: padding 0.4s var(--easing);
+      }
+      .work-item:last-child { border-bottom: 1px solid var(--line); }
+      .work-item .num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px; color: var(--muted); padding-top: 10px;
+      }
+      .work-item .title {
+        font-family: "Fraunces", serif;
+        font-weight: 400;
+        font-size: clamp(28px, 3.4vw, 48px);
+        line-height: 1.05; letter-spacing: -0.02em;
+        margin: 0; color: var(--ink);
+        transition: color 0.3s, transform 0.5s var(--easing);
+      }
+      .work-item .meta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: var(--muted); margin-top: 10px;
+        display: flex; gap: 18px; flex-wrap: wrap;
+      }
+      .work-item .meta b { color: var(--ink); font-weight: 500; }
+      .work-item .desc {
+        max-height: 0; opacity: 0; overflow: hidden;
+        transition: max-height 0.6s var(--easing), opacity 0.5s, margin-top 0.5s;
+        color: var(--ink-dim); font-size: 15.5px; max-width: 56ch;
+      }
+      .work-item:hover .title { color: var(--accent); transform: translateX(8px); }
+      .work-item:hover .desc, .work-item.is-open .desc { max-height: 220px; opacity: 1; margin-top: 18px; }
+      .work-item .arrow {
+        position: absolute; right: 0; top: 36px;
+        font-family: "Fraunces", serif; font-size: 28px;
+        color: var(--muted);
+        transition: transform 0.4s var(--easing), color 0.3s;
+      }
+      .work-item:hover .arrow { transform: translateX(8px) rotate(-12deg); color: var(--accent); }
+
+      /* ─── STACK ─────────────────────────────────────────────────────── */
+      .stack {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .stack-cols {
+        display: grid; gap: 32px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .stack-col h3 {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+        color: var(--accent); margin: 0 0 18px;
+      }
+      .stack-col ul {
+        margin: 0; padding: 0; list-style: none;
+        display: flex; flex-direction: column; gap: 10px;
+      }
+      .stack-col li {
+        font-family: "Fraunces", serif;
+        font-size: 22px; font-weight: 400;
+        color: var(--ink); letter-spacing: -0.01em;
+        position: relative; padding-left: 22px;
+        font-variation-settings: "opsz" 36;
+      }
+      .stack-col li::before {
+        content: "◆"; position: absolute; left: 0; top: 4px;
+        color: var(--muted); font-size: 9px;
+        transition: color 0.3s, transform 0.3s;
+      }
+      .stack-col li:hover::before { color: var(--accent); transform: rotate(45deg) scale(1.4); }
+      .stack-col li small {
+        display: block; font-family: "Manrope", sans-serif;
+        font-size: 12.5px; color: var(--muted); font-style: normal; margin-top: 2px;
+      }
+
+      /* ─── NOW ───────────────────────────────────────────────────────── */
+      .now {
+        display: grid; grid-template-columns: 1fr; gap: 28px;
+      }
+      .now-card {
+        position: relative;
+        background:
+          radial-gradient(120% 100% at 0% 0%, rgba(232,93,47,0.12), transparent 60%),
+          var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 36px;
+      }
+      .now-card .head {
+        display: flex; gap: 14px; align-items: center; margin-bottom: 20px;
+        font-family: "JetBrains Mono", monospace; font-size: 11px;
+        letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+      }
+      .now-card .head .pip { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+      .now-card h3 {
+        font-family: "Fraunces", serif; font-weight: 400;
+        font-size: clamp(22px, 2.4vw, 30px); line-height: 1.2;
+        margin: 0 0 14px; color: var(--ink); letter-spacing: -0.01em;
+      }
+      .now-card p {
+        margin: 0; color: var(--ink-dim); max-width: var(--measure);
+        font-size: 15.5px;
+      }
+      .now-card .tags {
+        margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap;
+      }
+      .now-card .tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+        padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px;
+        color: var(--ink-dim);
+      }
+      @media (min-width: 800px) { .now { grid-template-columns: 1fr 1fr; } }
+
+      /* ─── CONTACT ───────────────────────────────────────────────────── */
+      .contact {
+        display: grid; grid-template-columns: 1fr; gap: 48px;
+      }
+      .contact-form {
+        display: grid; gap: 18px;
+      }
+      .field { display: grid; gap: 6px; }
+      .field label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase;
+        color: var(--muted);
+      }
+      .field input, .field textarea {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--line);
+        color: var(--ink);
+        font: 400 17px/1.5 "Fraunces", serif;
+        padding: 10px 0 12px;
+        outline: none;
+        transition: border-color 0.3s, padding 0.3s;
+        font-variation-settings: "opsz" 36;
+      }
+      .field textarea { resize: vertical; min-height: 96px; font-family: "Manrope", sans-serif; font-size: 15px; }
+      .field input:focus, .field textarea:focus { border-color: var(--accent); padding-left: 8px; }
+      .honeypot { position: absolute; left: -9999px; }
+
+      .contact button {
+        justify-self: start;
+        display: inline-flex; gap: 10px; align-items: center;
+        padding: 14px 22px; border-radius: 999px;
+        background: var(--accent); color: var(--bg);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+        border: none; cursor: pointer;
+        transition: transform 0.4s var(--easing), background 0.3s;
+      }
+      .contact button:hover { background: var(--accent-soft); transform: translateY(-2px); }
+      .contact button[disabled] { opacity: 0.6; cursor: progress; }
+
+      .contact-aside {
+        display: grid; gap: 24px; align-content: start;
+        font-family: "JetBrains Mono", monospace; font-size: 12px;
+        color: var(--ink-dim);
+      }
+      .contact-aside .label {
+        color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; font-size: 10.5px;
+      }
+      .contact-aside a {
+        font-family: "Fraunces", serif; font-size: 22px; color: var(--ink);
+        letter-spacing: -0.01em; display: inline-block;
+        background-image: linear-gradient(var(--accent), var(--accent));
+        background-repeat: no-repeat;
+        background-size: 0% 1px;
+        background-position: 0 100%;
+        transition: background-size 0.4s var(--easing), color 0.3s;
+        padding-bottom: 2px;
+      }
+      .contact-aside a:hover { color: var(--accent); background-size: 100% 1px; }
+
+      .form-status {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px; color: var(--accent);
+        min-height: 18px; letter-spacing: 0.06em;
+      }
+
+      @media (min-width: 900px) { .contact { grid-template-columns: 1.4fr 0.6fr; gap: 80px; } }
+
+      /* ─── MARQUEE ───────────────────────────────────────────────────── */
+      .marquee {
+        margin: 8vh 0 0;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        overflow: hidden; position: relative;
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-weight: 300;
+        font-size: clamp(40px, 7vw, 96px);
+        letter-spacing: -0.02em; color: var(--ink);
+        font-variation-settings: "opsz" 144;
+      }
+      .marquee-track {
+        display: flex; gap: 64px;
+        white-space: nowrap;
+        animation: marquee 38s linear infinite;
+        padding: 24px 0;
+      }
+      .marquee-track span { display: inline-flex; align-items: center; gap: 64px; }
+      .marquee-track span::after { content: "◆"; font-size: 14px; font-style: normal; color: var(--accent); }
+      @keyframes marquee {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+      }
+
+      /* ─── FOOTER ────────────────────────────────────────────────────── */
+      footer {
+        max-width: 1280px; margin: 0 auto;
+        padding: 64px 6vw 56px;
+        display: grid; grid-template-columns: 1fr; gap: 28px;
+        border-top: 1px solid var(--line);
+        font-family: "JetBrains Mono", monospace; font-size: 11.5px;
+        color: var(--muted); letter-spacing: 0.05em;
+      }
+      footer .row { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+      footer b { color: var(--ink); font-weight: 500; }
+      footer .glyph {
+        font-family: "Fraunces", serif; font-size: 80px; line-height: 1;
+        font-style: italic; color: var(--accent); font-weight: 300;
+      }
+
+      /* ─── shortcuts hint ────────────────────────────────────────────── */
+      .hint {
+        position: fixed; bottom: 22px; left: 22px; z-index: 60;
+        display: flex; gap: 8px; align-items: center;
+        font-family: "JetBrains Mono", monospace; font-size: 10.5px;
+        color: var(--muted); letter-spacing: 0.08em;
+        background: color-mix(in srgb, var(--bg) 70%, transparent);
+        backdrop-filter: blur(8px);
+        padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px;
+      }
+      .hint kbd {
+        font-family: inherit; font-size: 10px;
+        padding: 2px 6px; border: 1px solid var(--line);
+        border-radius: 4px; color: var(--ink); background: var(--surface);
+      }
+      @media (max-width: 700px) { .hint { display: none; } }
+
+      /* ─── glitch (easter egg) ───────────────────────────────────────── */
+      .glitch { animation: glitch 0.6s steps(2) 3; }
+      @keyframes glitch {
+        0%   { transform: translate(0,0); filter: hue-rotate(0deg); }
+        20%  { transform: translate(-3px, 1px); filter: hue-rotate(20deg); text-shadow: 2px 0 var(--accent), -2px 0 var(--warn); }
+        40%  { transform: translate(2px, -2px); filter: hue-rotate(-15deg); text-shadow: -3px 0 var(--accent), 3px 0 var(--warn); }
+        60%  { transform: translate(-1px, 2px); }
+        100% { transform: translate(0,0); filter: none; text-shadow: none; }
+      }
+
+      /* ─── small screens ─────────────────────────────────────────────── */
+      @media (max-width: 700px) {
+        .topbar { grid-template-columns: 1fr auto; }
+        .topbar .status { display: none; }
+        .hero-line { grid-template-columns: 1fr; gap: 24px; }
+        .work-item { grid-template-columns: 1fr; gap: 8px; }
+        .work-item .arrow { display: none; }
+        section { padding: 12vh 6vw; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="progress" id="progress" aria-hidden="true"></div>
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+    <!-- Netlify Forms detection (kept) -->
+    <form hidden method='post' name='contact'><input type='hidden' name='form-name' value='contact' />
+      <input name="name" />
+      <input name="email" />
+      <textarea name="message"></textarea>
+    </form>
+
+    <header class="shell">
+      <div class="topbar">
+        <a href="#top" class="mark" data-magnetic><span class="dot"></span>otniel</a>
+        <div class="status">
+          <span><b id="liveTime">—</b> <em id="liveZone" style="color:var(--muted);font-style:normal">local</em></span>
+          <span class="sep">/</span>
+          <span>open to <b>consulting &amp; integration</b></span>
+        </div>
+        <nav>
+          <a href="#work">Work</a>
+          <a href="#now">Now</a>
+          <a href="#contact">Contact</a>
+          <span class="key" id="themeKey">T &middot; theme</span>
+        </nav>
+      </div>
+    </header>
+
+    <aside class="side" aria-label="Section index">
+      <a href="#top" data-side="top">01 — Index</a>
+      <a href="#note" data-side="note">02 — Note</a>
+      <a href="#work" data-side="work">03 — Work</a>
+      <a href="#stack" data-side="stack">04 — Stack</a>
+      <a href="#now" data-side="now">05 — Now</a>
+      <a href="#contact" data-side="contact">06 — Contact</a>
+    </aside>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero" aria-labelledby="heroName">
+        <div class="eyebrow reveal">
+          <span class="live">building</span>
+          <span>portfolio · v.1 · <b>2026 edition</b></span>
+          <span>based in <b>miami, fl</b></span>
+        </div>
+
+        <h1 class="hero-name reveal" id="heroName" aria-label="Otniel">
+          <span class="letter">O</span><span class="letter">t</span><span class="letter em">n</span><span class="letter">i</span><span class="letter">e</span><span class="letter">l</span><span class="letter">.</span>
+        </h1>
+
+        <div class="hero-line reveal">
+          <p>
+            <span class="accent">Technologist, systems architect, and builder.</span>
+            I engineer practical systems that merge AI, automation, cybersecurity,
+            and minimalist design into real-world tools — technology that augments
+            human capability instead of consuming human attention.
+          </p>
+          <a href="#contact" class="hero-cta" data-magnetic>
+            <span>Start a conversation</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="hero-strip reveal">
+          <span><b>APIs</b> &amp; integrations</span>
+          <span><b>AI</b> orchestration</span>
+          <span><b>Cybersecurity</b> research</span>
+          <span><b>1</b> stubborn thesis</span>
+        </div>
+      </section>
+
+      <!-- NOTE -->
+      <section id="note" aria-labelledby="noteTitle">
+        <div class="section-head reveal">
+          <span class="section-index">02 — A short note</span>
+          <h2 id="noteTitle">A thesis on <em>systems</em> over chaos.</h2>
+        </div>
+
+        <div class="note">
+          <div class="note-body reveal">
+            <p class="first">
+              Most technology treats <em>attention</em> as a resource to extract. I treat it
+              as something to <em>protect</em>. The systems I build are opinionated, minimal,
+              and measured by what they return to the user rather than what they consume.
+            </p>
+            <p style="margin-top:24px">
+              Progress over clutter. Systems over chaos. Truth over comfort.
+              The work below follows that thesis — infrastructure, automation,
+              and hardware in roughly equal parts.
+            </p>
+          </div>
+          <div class="note-meta reveal">
+            <div>
+              <span class="label">Currently</span>
+              <b>FanBasis</b><br />Head of Technical Account Management<br />APIs, payments, integrations.
+            </div>
+            <div>
+              <span class="label">Building</span>
+              <b>kAIzen Machina</b><br /><b>OpenClaw</b> · AI automation<br /><b>STL Gen</b> · AI fabrication
+            </div>
+            <div>
+              <span class="label">Working in</span>
+              <b>Node.js</b>, <b>Python</b>,<br /><b>React</b>, <b>Next.js</b>, PHP.
+            </div>
+            <div>
+              <span class="label">Exploring</span>
+              AI orchestration · Cybersecurity · Quantum mechanics · 3D fabrication.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORK -->
+      <section id="work" aria-labelledby="workTitle">
+        <div class="section-head reveal">
+          <span class="section-index">03 — Selected work</span>
+          <h2 id="workTitle">Things <em>shipped</em> &amp; running.</h2>
+        </div>
+
+        <div class="work-grid reveal">
+          <article class="work-item" data-magnetic>
+            <span class="num">/01</span>
+            <div>
+              <h3 class="title">kAIzen Machina</h3>
+              <div class="meta"><span><b>AI companion device</b></span><span>ongoing</span><span>Hardware · AI · Voice-first</span></div>
+              <p class="desc">A next-generation wearable AI companion — voice-first, screenless, privacy-focused. Designed to function as a second brain rather than a smartphone. Minimalist hardware with an AI-native operating system.</p>
+            </div>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </article>
+
+          <article class="work-item" data-magnetic>
+            <span class="num">/02</span>
+            <div>
+              <h3 class="title">OpenClaw</h3>
+              <div class="meta"><span><b>AI automation system</b></span><span>ongoing</span><span>Python · AI · Orchestration</span></div>
+              <p class="desc">Autonomous AI-driven workflows capable of executing commands, managing files, orchestrating models, and automating operations. A semi-autonomous digital operator.</p>
+            </div>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </article>
+
+          <article class="work-item" data-magnetic>
+            <span class="num">/03</span>
+            <div>
+              <h3 class="title">AI-Powered STL Generation</h3>
+              <div class="meta"><span><b>AI fabrication</b></span><span>ongoing</span><span>AI · 3D Printing · NLP</span></div>
+              <p class="desc">Converting natural language into printable 3D models using AI. Letting people create physical objects without learning CAD — accessible design meets rapid prototyping.</p>
+            </div>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </article>
+
+          <article class="work-item" data-magnetic>
+            <span class="num">/04</span>
+            <div>
+              <h3 class="title">Copilot Enterprise Agent</h3>
+              <div class="meta"><span><b>Internal AI assistant</b></span><span>ongoing</span><span>Microsoft · APIs · Enterprise</span></div>
+              <p class="desc">Internal AI assistants for enterprise operations — department knowledge retrieval, workflow automation, intelligent document generation, and API-driven actions.</p>
+            </div>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </article>
+
+          <article class="work-item" data-magnetic>
+            <span class="num">/05</span>
+            <div>
+              <h3 class="title">Modular EDC Systems</h3>
+              <div class="meta"><span><b>Systems architecture</b></span><span>ongoing</span><span>Hardware · Security · Off-grid</span></div>
+              <p class="desc">An extensive modular carry ecosystem optimized for daily operations, cybersecurity fieldwork, travel, and off-grid resilience. Every module designed for minimal redundancy and high utility.</p>
+            </div>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </article>
+        </div>
+      </section>
+
+      <!-- MARQUEE -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>Progress over clutter</span><span>Systems over chaos</span><span>Truth over comfort</span>
+          <span>Build systems that compound</span><span>Optimize for freedom</span><span>Curiosity is mandatory</span>
+          <span>Progress over clutter</span><span>Systems over chaos</span><span>Truth over comfort</span>
+          <span>Build systems that compound</span><span>Optimize for freedom</span><span>Curiosity is mandatory</span>
+        </div>
+      </div>
+
+      <!-- STACK -->
+      <section id="stack" aria-labelledby="stackTitle">
+        <div class="section-head reveal">
+          <span class="section-index">04 — Tools &amp; texture</span>
+          <h2 id="stackTitle">The <em>kit</em> behind the work.</h2>
+        </div>
+
+        <div class="stack reveal">
+          <div class="stack-cols">
+            <div class="stack-col">
+              <h3>Languages</h3>
+              <ul>
+                <li>JavaScript<small>everywhere</small></li>
+                <li>Node.js<small>backend backbone</small></li>
+                <li>Python<small>AI &amp; automation</small></li>
+                <li>PHP<small>legacy &amp; WordPress</small></li>
+              </ul>
+            </div>
+            <div class="stack-col">
+              <h3>Frameworks</h3>
+              <ul>
+                <li>Next.js<small>production apps</small></li>
+                <li>React<small>component architecture</small></li>
+                <li>Webflow<small>rapid deployment</small></li>
+                <li>Serverless<small>edge &amp; functions</small></li>
+              </ul>
+            </div>
+            <div class="stack-col">
+              <h3>Infrastructure</h3>
+              <ul>
+                <li>REST APIs<small>integration backbone</small></li>
+                <li>Webhooks<small>event-driven systems</small></li>
+                <li>Payment systems<small>checkout &amp; auth</small></li>
+                <li>SDK architecture<small>embedded flows</small></li>
+              </ul>
+            </div>
+            <div class="stack-col">
+              <h3>Hardware</h3>
+              <ul>
+                <li>Flipper Zero<small>security research</small></li>
+                <li>ESP32 Marauder<small>wireless testing</small></li>
+                <li>Raspberry Pi<small>edge compute</small></li>
+                <li>3D Printing<small>functional fabrication</small></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOW -->
+      <section id="now" aria-labelledby="nowTitle">
+        <div class="section-head reveal">
+          <span class="section-index">05 — Right now</span>
+          <h2 id="nowTitle">What's on the bench <em>this week</em>.</h2>
+        </div>
+
+        <div class="now reveal">
+          <article class="now-card">
+            <div class="head"><span class="pip"></span> building</div>
+            <h3>kAIzen Machina — the second brain.</h3>
+            <p>Designing an AI-native wearable that replaces the smartphone with something quieter. Voice-first, screenless, projection-capable. Late 90s futurism meets minimalist industrial design.</p>
+            <div class="tags"><span class="tag">AI Hardware</span><span class="tag">Voice-first</span><span class="tag">Privacy</span></div>
+          </article>
+
+          <article class="now-card">
+            <div class="head"><span class="pip"></span> automating</div>
+            <h3>AI orchestration &amp; autonomous agents.</h3>
+            <p>Pushing OpenClaw further into autonomous territory — multi-model routing, command execution, file management. Building the systems that build the systems.</p>
+            <div class="tags"><span class="tag">OpenClaw</span><span class="tag">Multi-agent</span><span class="tag">Orchestration</span></div>
+          </article>
+
+          <article class="now-card">
+            <div class="head"><span class="pip"></span> researching</div>
+            <h3>Cybersecurity &amp; quantum mechanics.</h3>
+            <p>Flipper Zero experiments, ESP32 Marauder builds, wireless penetration testing concepts. Parallel deep dives into quantum entanglement, superposition, and consciousness implications.</p>
+            <div class="tags"><span class="tag">Security</span><span class="tag">Quantum</span><span class="tag">Hardware</span></div>
+          </article>
+
+          <article class="now-card">
+            <div class="head"><span class="pip"></span> optimizing</div>
+            <h3>Systems for everything.</h3>
+            <p>Refining the modular EDC kit. Planning the off-grid compound. Journaling as structured self-analysis. Fewer possessions, higher utility. The essentialist operating system for life.</p>
+            <div class="tags"><span class="tag">Essentialism</span><span class="tag">Off-grid</span><span class="tag">Self-reliance</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" aria-labelledby="contactTitle">
+        <div class="section-head reveal">
+          <span class="section-index">06 — Get in touch</span>
+          <h2 id="contactTitle">Send a <em>short</em> note.</h2>
+        </div>
+
+        <div class="contact reveal">
+          <form class='contact-form' id='contactForm' method='POST' name='contact'>
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="honeypot">
+              <label>Don't fill this out: <input name="bot-field" /></label>
+            </p>
+            <div class="field">
+              <label for="cn">Your name</label>
+              <input id="cn" name="name" type="text" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="ce">Email to reply to</label>
+              <input id="ce" name="email" type="email" required autocomplete="email" />
+            </div>
+            <div class="field">
+              <label for="cm">The note (50 to 400 words is ideal)</label>
+              <textarea id="cm" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" data-magnetic>
+              <span id="sendLabel">Send note</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+          </form>
+
+          <div class="contact-aside">
+            <div>
+              <span class="label">Email</span><br />
+              <a href="mailto:gonzalezot16@gmail.com">gonzalezot16@gmail.com</a>
+            </div>
+            <div>
+              <span class="label">Location</span><br />
+              <a href="https://maps.google.com/?q=1200+Ponce+de+Leon+Blvd+Coral+Gables+FL+33134" rel="noopener" target="_blank">1200 Ponce de Leon Blvd<br />Coral Gables, FL 33134</a>
+            </div>
+            <div>
+              <span class="label">Elsewhere</span><br />
+              <a href="https://github.com/otniel-bit" rel="me noopener" target="_blank">github</a> ·
+              <a href="https://www.linkedin.com/in/otnieldavidgonzalez/" rel="me noopener" target="_blank">linkedin</a> ·
+              <a href="https://instagram.com/oatmeal.io" rel="me noopener" target="_blank">instagram</a>
+            </div>
+            <div>
+              <span class="label">Availability</span><br />
+              Open to consulting, technical advisory,<br />and integration projects.
+            </div>
+            <div>
+              <span class="label">Response time</span><br />
+              As fast as the systems allow.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="row">
+        <div>
+          <b id="footYear">2026</b> · Otniel.<br />
+          Progress over clutter.
+        </div>
+        <div style="text-align:right">
+          <span id="footTime">—</span><br />
+          Miami, FL · 25.7617° N
+        </div>
+      </div>
+      <div class="row" style="align-items:flex-end">
+        <div class="glyph" aria-hidden="true">o.</div>
+        <div style="text-align:right">
+          v.1.0 · last touched <b id="touched">today</b><br />
+          press <kbd style="font-family:inherit;border:1px solid var(--line);padding:2px 5px;border-radius:4px">T</kbd>
+          for paper · <kbd style="font-family:inherit;border:1px solid var(--line);padding:2px 5px;border-radius:4px">1–6</kbd> to jump
+        </div>
+      </div>
+    </footer>
+
+    <div class="hint" aria-hidden="true">
+      <kbd>T</kbd> theme · <kbd>1</kbd>–<kbd>6</kbd> sections · type
+      <span style="color:var(--accent)">otniel</span>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+        const $ = (s, r = document) => r.querySelector(s);
+        const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+        // ─── scroll progress ───────────────────────────────────────────
+        const progress = $("#progress");
+        const onScroll = () => {
+          const h = document.documentElement;
+          const p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+          progress.style.setProperty("--p", (p * 100).toFixed(2) + "%");
+        };
+        document.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+
+        // ─── cursor follower ────────────────────────────────────────────
+        const cursor = $("#cursor");
+        let cx = -100, cy = -100, tx = -100, ty = -100;
+        const isFine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+        if (isFine) {
+          window.addEventListener("mousemove", (e) => { tx = e.clientX; ty = e.clientY; });
+          const tick = () => {
+            cx += (tx - cx) * 0.18;
+            cy += (ty - cy) * 0.18;
+            cursor.style.transform = `translate3d(${cx - 4}px, ${cy - 4}px, 0)`;
+            requestAnimationFrame(tick);
+          };
+          tick();
+          $$("a, button, .work-item, [data-magnetic]").forEach((el) => {
+            el.addEventListener("mouseenter", () => cursor.classList.add("is-hover"));
+            el.addEventListener("mouseleave", () => cursor.classList.remove("is-hover"));
+          });
+        } else {
+          cursor.style.display = "none";
+        }
+
+        // ─── magnetic buttons ──────────────────────────────────────────
+        if (isFine) {
+          const mag = $$("[data-magnetic]");
+          mag.forEach((el) => {
+            el.style.transition = "transform 0.5s cubic-bezier(.22,1,.36,1)";
+            el.addEventListener("mousemove", (e) => {
+              const r = el.getBoundingClientRect();
+              const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+              const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+              el.style.transform = `translate(${dx * 8}px, ${dy * 6}px)`;
+            });
+            el.addEventListener("mouseleave", () => { el.style.transform = ""; });
+          });
+        }
+
+        // ─── reveal on scroll ──────────────────────────────────────────
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } }),
+          { rootMargin: "0px 0px -10% 0px", threshold: 0.06 }
+        );
+        $$(".reveal").forEach((el) => io.observe(el));
+
+        // ─── side index active state ───────────────────────────────────
+        const sideLinks = $$(".side a");
+        const sectionMap = { "top": "top", "note": "note", "work": "work", "stack": "stack", "now": "now", "contact": "contact" };
+        const so = new IntersectionObserver(
+          (entries) => entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            const id = e.target.id;
+            sideLinks.forEach((a) => a.classList.toggle("is-active", a.dataset.side === id));
+          }),
+          { rootMargin: "-40% 0px -50% 0px" }
+        );
+        Object.values(sectionMap).forEach((id) => { const el = document.getElementById(id); if (el) so.observe(el); });
+
+        // ─── live time ──────────────────────────────────────────────────
+        const liveTime = $("#liveTime");
+        const liveZone = $("#liveZone");
+        const footTime = $("#footTime");
+        const fmt = new Intl.DateTimeFormat([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "local";
+        liveZone.textContent = tz.split("/").pop().replace(/_/g, " ").toLowerCase();
+        const renderTime = () => {
+          const now = fmt.format(new Date());
+          liveTime.textContent = now;
+          footTime.textContent = now + " · " + tz;
+        };
+        renderTime();
+        setInterval(renderTime, 1000);
+
+        $("#footYear").textContent = new Date().getFullYear();
+        $("#touched").textContent = new Date().toLocaleDateString(undefined, { month: "short", day: "numeric" });
+
+        // ─── theme toggle ──────────────────────────────────────────────
+        const root = document.documentElement;
+        const setTheme = (t) => {
+          root.dataset.theme = t;
+          try { localStorage.setItem("otn-theme", t); } catch (_) {}
+        };
+        try {
+          const saved = localStorage.getItem("otn-theme");
+          if (saved) root.dataset.theme = saved;
+        } catch (_) {}
+
+        const toggleTheme = () => setTheme(root.dataset.theme === "ink" ? "paper" : "ink");
+        $("#themeKey").addEventListener("click", toggleTheme);
+
+        // ─── keyboard ──────────────────────────────────────────────────
+        const sectionOrder = ["top", "note", "work", "stack", "now", "contact"];
+        let buf = "";
+        window.addEventListener("keydown", (e) => {
+          const tag = (e.target && e.target.tagName) || "";
+          if (tag === "INPUT" || tag === "TEXTAREA") return;
+          if (e.key.toLowerCase() === "t") { toggleTheme(); return; }
+          if (/^[1-6]$/.test(e.key)) {
+            const id = sectionOrder[parseInt(e.key, 10) - 1];
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+          }
+          if (/^[a-z]$/i.test(e.key)) {
+            buf = (buf + e.key.toLowerCase()).slice(-6);
+            if (buf === "otniel") {
+              const name = $("#heroName");
+              name.classList.remove("glitch"); void name.offsetWidth; name.classList.add("glitch");
+              buf = "";
+            }
+          }
+        });
+
+        // ─── work item open on click (mobile) ──────────────────────────
+        $$(".work-item").forEach((it) => it.addEventListener("click", () => {
+          if (!isFine) it.classList.toggle("is-open");
+        }));
+
+        // ─── contact form (Netlify Forms) ──────────────────────────────
+        const form = $("#contactForm");
+        const status = $("#formStatus");
+        const sendLabel = $("#sendLabel");
+        const encode = (data) => Object.keys(data).map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k])).join("&");
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = form.querySelector("button");
+          btn.setAttribute("disabled", "true");
+          sendLabel.textContent = "Sending…";
+          status.textContent = "";
+          const data = Object.fromEntries(new FormData(form).entries());
+          try {
+            const res = await fetch("/", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: encode(data)
+            });
+            if (!res.ok) throw new Error("Form failed: " + res.status);
+            status.textContent = "Note received. Reply within two business days.";
+            sendLabel.textContent = "Sent ✓";
+            form.reset();
+          } catch (err) {
+            status.style.color = "var(--warn)";
+            status.textContent = "Couldn't send right now — please try again shortly.";
+            sendLabel.textContent = "Send note";
+          } finally {
+            btn.removeAttribute("disabled");
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+.DS_Store
+*.log
+*.pem
+*.key
+*.p12
+*.mobileconfig
+.env
+.env.*
+!.env.example
+secrets/
+
+# Local website development workspace. The static Netlify output is in deploy/.
+site/
