@@ -146,6 +146,22 @@
       .topbar nav { justify-self: end; display: flex; gap: 14px; align-items: center; }
       .topbar nav a { transition: color 0.2s; }
       .topbar nav a:hover { color: var(--accent); }
+      .topbar nav .setup-link {
+        display: inline-flex; align-items: center; gap: 7px;
+        border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--line));
+        padding: 4px 9px; border-radius: 999px;
+        color: var(--accent); font-size: 10.5px;
+        transition: color 0.25s, background 0.25s, border-color 0.25s, transform 0.25s var(--easing);
+      }
+      .topbar nav .setup-link::before {
+        content: ""; width: 6px; height: 6px; border-radius: 50%;
+        background: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
+      }
+      .topbar nav .setup-link:hover {
+        color: var(--bg); background: var(--accent); border-color: var(--accent);
+        transform: translateY(-1px);
+      }
+      .topbar nav .setup-link:hover::before { background: var(--bg); box-shadow: none; }
       .topbar .key {
         border: 1px solid var(--line); padding: 4px 8px; border-radius: 6px;
         font-size: 10.5px; color: var(--ink-dim);
@@ -580,6 +596,8 @@
       @media (max-width: 700px) {
         .topbar { grid-template-columns: 1fr auto; }
         .topbar .status { display: none; }
+        .topbar nav { gap: 8px; }
+        .topbar nav > a:not(.setup-link) { display: none; }
         .hero-line { grid-template-columns: 1fr; gap: 24px; }
         .work-item { grid-template-columns: 1fr; gap: 8px; }
         .work-item .arrow { display: none; }
@@ -613,6 +631,7 @@
           <a href="#work">Work</a>
           <a href="#now">Now</a>
           <a href="#contact">Contact</a>
+          <a href="/setup/" class="setup-link" title="Open the portable Mac setup">Setup ↗</a>
           <span class="key" id="themeKey">T &middot; theme</span>
         </nav>
       </div>
@@ -942,13 +961,14 @@
         <div style="text-align:right">
           v.1.0 · last touched <b id="touched">today</b><br />
           press <kbd style="font-family:inherit;border:1px solid var(--line);padding:2px 5px;border-radius:4px">T</kbd>
-          for paper · <kbd style="font-family:inherit;border:1px solid var(--line);padding:2px 5px;border-radius:4px">1–6</kbd> to jump
+          for paper · <kbd style="font-family:inherit;border:1px solid var(--line);padding:2px 5px;border-radius:4px">1–6</kbd> to jump ·
+          <a href="/setup/" style="color:var(--accent)"><kbd style="font-family:inherit;border:1px solid var(--line);padding:2px 5px;border-radius:4px">S</kbd> setup</a>
         </div>
       </div>
     </footer>
 
     <div class="hint" aria-hidden="true">
-      <kbd>T</kbd> theme · <kbd>1</kbd>–<kbd>6</kbd> sections · type
+      <kbd>T</kbd> theme · <kbd>1</kbd>–<kbd>6</kbd> sections · <kbd>S</kbd> setup · type
       <span style="color:var(--accent)">otniel</span>
     </div>
 
@@ -1063,6 +1083,7 @@
           const tag = (e.target && e.target.tagName) || "";
           if (tag === "INPUT" || tag === "TEXTAREA") return;
           if (e.key.toLowerCase() === "t") { toggleTheme(); return; }
+          if (e.key.toLowerCase() === "s") { window.location.href = "/setup/"; return; }
           if (/^[1-6]$/.test(e.key)) {
             const id = sectionOrder[parseInt(e.key, 10) - 1];
             const el = document.getElementById(id);
