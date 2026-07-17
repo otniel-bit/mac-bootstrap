@@ -595,7 +595,7 @@
     <div class="cursor" id="cursor" aria-hidden="true"></div>
 
     <!-- Netlify Forms detection (kept) -->
-    <form hidden method='post' name='contact'><input type='hidden' name='form-name' value='contact' />
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
       <input name="name" />
       <input name="email" />
       <textarea name="message"></textarea>
@@ -867,7 +867,14 @@
         </div>
 
         <div class="contact reveal">
-          <form class='contact-form' id='contactForm' method='POST' name='contact'>
+          <form
+            class="contact-form"
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            id="contactForm"
+          >
             <input type="hidden" name="form-name" value="contact" />
             <p class="honeypot">
               <label>Don't fill this out: <input name="bot-field" /></label>
